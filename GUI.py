@@ -10,11 +10,10 @@ def change():
     data = FP.searchWebsite(stock_ticker)
 
     if isinstance(data, pd.core.frame.DataFrame):
-        Lb = tk.Listbox()
+        Lb.delete(0,'end')
         for index, row in data.iterrows():
             Lb.insert(index, row['Name'] + " " + row['Symbol'])
-            print(row['Name'], row['Symbol'])
-        Lb.pack()
+
     else:
         lb2.config(text = data)
 """
@@ -34,5 +33,8 @@ cb.pack()
 
 lb2 = tk.Label(root, text = "Stock data will display here.", justify='center',width = 50)
 lb2.pack()
+
+Lb = tk.Listbox()
+Lb.pack()
 
 root.mainloop()
