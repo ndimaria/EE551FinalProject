@@ -24,17 +24,17 @@ def change():
         e1.insert(0,stock_ticker)
         lb2.config(text = data)
 
-"""
+
 def func(event):
-    stock_ticker = e1.get()
-    lb2.config(text = FP.searchWebsite(stock_ticker))
+    change()
 root.bind('<Return>', func)
-"""
+
 
 lb1 = tk.Label(root, text='Enter stock ticker:',width = 50)
 lb1.pack()
 e1 = tk.Entry(root)
 e1.pack()
+e1.focus()
 
 cb = tk.Button(root, text = "OK", command=change, justify ='center')
 cb.pack()
