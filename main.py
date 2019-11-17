@@ -8,3 +8,4 @@ while(1):
     if (searchTerm ==  "exit"):
         break
     print(FP.searchWebsite(searchTerm) ,end = '\n\n')
+    print(FP.upOrDown(searchTerm), end = '\n')

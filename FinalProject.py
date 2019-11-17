@@ -83,3 +83,15 @@ def searchWebsite(searchTerm):
 
     # otherwise we have to display the search terms
     return displaySearch(tree)
+
+def upOrDown(searchTerm):
+    up =True
+    requestUrl = 'https://markets.businessinsider.com/searchresults?_search='+searchTerm
+    page = requests.get(requestUrl)
+    tree = html.fromstring(page.content)
+    image = tree.xpath('//*[@class="icon-set change-indicator-arrow arrow-up-big"]')
+
+    if len(image) == 0:
+        return(not up)
+    else:
+        return(up)

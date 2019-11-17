@@ -14,19 +14,21 @@ def change():
         stock_ticker = e1.get()
 
     data = FP.searchWebsite(stock_ticker)
+    up = FP.upOrDown(stock_ticker)
 
     if isinstance(data, pd.core.frame.DataFrame):
         Lb.delete(0,'end')
         for index, row in data.iterrows():
             Lb.insert(index, row['Name'] + " " + row['Symbol'])
     else:
+        Lb.delete(0,'end')
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
         lb2.config(text = data)
-    canvas = tk.Canvas(root, width = 300, height = 300)
-    canvas.pack()
-    img = tk.PhotoImage(file="bll.jpg")
-    canvas.create_image(20,20, anchor=tk.NW, image=img)
+        if(up):
+            image.config(image=upArrow)
+        else:
+            image.config(image=downArrow)
 
 def func(event):
     change()
@@ -44,7 +46,13 @@ cb.pack()
 lb2 = tk.Label(root, text = "Stock data will display here.", justify='center',width = 50)
 lb2.pack()
 
+upArrow = tk.PhotoImage(file="UpArrow.pgm")
+downArrow = tk.PhotoImage(file="DownArrow.pgm")
+image = tk.Label(root)
+image.pack()
+
 Lb = tk.Listbox(width =50)
 Lb.pack()
+
 
 root.mainloop()
