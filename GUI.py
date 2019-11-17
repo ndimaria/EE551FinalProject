@@ -23,12 +23,14 @@ def change():
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
         lb2.config(text = data)
-
+    canvas = tk.Canvas(root, width = 300, height = 300)
+    canvas.pack()
+    img = tk.PhotoImage(file="bll.jpg")
+    canvas.create_image(20,20, anchor=tk.NW, image=img)
 
 def func(event):
     change()
 root.bind('<Return>', func)
-
 
 lb1 = tk.Label(root, text='Enter stock ticker:',width = 50)
 lb1.pack()
