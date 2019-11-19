@@ -3,6 +3,16 @@ import requests
 import time
 import pandas as pd
 
+class company(object):
+    def __init__(self,stock_ticker,name,price):
+        self.stock_ticker = stock_ticker
+        self.name = name
+        self.price = price
+    def __str__(self):
+        return("The price of {0} ({1}) is ${2}".format(self.name, self.stock_ticker, self.price))
+    def getData(self):
+        return("The price of {0} ({1}) is ${2}".format(self.name, self.stock_ticker, self.price))
+        
 """
 Basic web scraping grabs the name of the stock
 as well as the price of the stock from the HTML
@@ -73,10 +83,16 @@ def searchWebsite(searchTerm):
 
     name, price = webScraping(tree)
 
+
     # if we get data back from webscarping we just display it
     if(len(name)!=0 or len(price)!=0):
         try:
-            return ("The price of {0} is ${1}".format(name[0],price[0]))
+            name = name[0].split()
+            stock_ticker = name[:-1]
+            del name[-1]
+            name = ' '.join(name)
+            return(company(searchTerm, name,price[0]))
+            #return ("The price of {0} is ${1}".format(name[0],price[0]))
         except:
             return ("There is no price data on this stock")
 

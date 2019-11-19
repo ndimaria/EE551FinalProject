@@ -7,5 +7,7 @@ while(1):
     searchTerm = input("What stock are you looking for: ")
     if (searchTerm ==  "exit"):
         break
-    print(FP.searchWebsite(searchTerm) ,end = '\n\n')
+    company = FP.searchWebsite(searchTerm)
+    print(company, end = '\n')
+    #print(FP.searchWebsite(searchTerm) ,end = '\n\n')
     print(FP.upOrDown(searchTerm), end = '\n')

@@ -13,10 +13,10 @@ def change():
     except:
         stock_ticker = e1.get()
 
-    data = FP.searchWebsite(stock_ticker)
+    company_data = FP.searchWebsite(stock_ticker)
     up = FP.upOrDown(stock_ticker)
 
-    if isinstance(data, pd.core.frame.DataFrame):
+    if isinstance(company_data, pd.core.frame.DataFrame):
         Lb.delete(0,'end')
         for index, row in data.iterrows():
             Lb.insert(index, row['Name'] + " " + row['Symbol'])
@@ -24,7 +24,7 @@ def change():
         Lb.delete(0,'end')
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
-        lb2.config(text = data)
+        lb2.config(text = company_data.getData())
         if(up):
             image.config(image=upArrow)
         else:
