@@ -9,5 +9,6 @@ while(1):
         break
     company = FP.searchWebsite(searchTerm)
     print(company, end = '\n')
+    print(company.change)
     #print(FP.searchWebsite(searchTerm) ,end = '\n\n')
-    print(FP.upOrDown(searchTerm), end = '\n')
+    #print(FP.upOrDown(searchTerm), end = '\n')

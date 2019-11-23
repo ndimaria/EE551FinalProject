@@ -14,7 +14,6 @@ def change():
         stock_ticker = e1.get()
 
     company_data = FP.searchWebsite(stock_ticker)
-    #up = FP.upOrDown(stock_ticker)
 
     if isinstance(company_data, pd.core.frame.DataFrame):
         Lb.delete(0,'end')
@@ -25,34 +24,31 @@ def change():
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
         lb2.config(text = company_data.getData())
-        if(company_data.up):
-            image.config(image=upArrow)
-        else:
-            image.config(image=downArrow)
 
+        if(company_data.up):
+            lb3.config(text="▲"+company_data.change,fg="green")
+        else:
+            lb3.config(text = "▼"+ company_data.change,fg="red")
 def func(event):
     change()
 root.bind('<Return>', func)
 
-lb1 = tk.Label(root, text='Enter stock ticker:',width = 50)
-lb1.pack()
+lb1 = tk.Label(root, text='Enter stock ticker:').grid(row=0)
+
 e1 = tk.Entry(root)
-e1.pack()
+e1.grid(row=1)
 e1.focus()
 
 cb = tk.Button(root, text = "OK", command=change, justify ='center')
-cb.pack()
+cb.grid(row=2)
 
-lb2 = tk.Label(root, text = "Stock data will display here.", justify='center',width = 50)
-lb2.pack()
+lb2 = tk.Label(root, text = "Stock data will display here.", justify='center')
+lb2.grid(row=3)
 
-upArrow = tk.PhotoImage(file="UpArrow.pgm")
-downArrow = tk.PhotoImage(file="DownArrow.pgm")
-image = tk.Label(root)
-image.pack()
+lb3 = tk.Label(root)
+lb3.grid(row=4)
 
-Lb = tk.Listbox(width =50)
-Lb.pack()
-
+Lb = tk.Listbox(width=50)
+Lb.grid(row=5)
 
 root.mainloop()

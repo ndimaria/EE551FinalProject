@@ -4,11 +4,12 @@ import time
 import pandas as pd
 
 class company(object):
-    def __init__(self,stock_ticker,name,price,up):
+    def __init__(self,stock_ticker,name,price,up,change):
         self.stock_ticker = stock_ticker
         self.name = name
         self.price = price
         self.up = up
+        self.change = change
     def __str__(self):
         return("The price of {0} ({1}) is ${2}".format(self.name, self.stock_ticker, self.price))
     def getData(self):
@@ -23,11 +24,11 @@ def webScraping(tree):
     name = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[1]/h1/span[1]/text()')
     price = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[1]/span/text()')
     image = tree.xpath('//*[@class="icon-set change-indicator-arrow arrow-up-big"]')
-
+    change = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[1]/span/text()')[0] + " " + tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[2]/span/text()')[0]
     if len(image) == 0:
         up = False
 
-    return name, price, up
+    return name, price, up, change
 
 """
 From this we want to grab all of the results
@@ -88,8 +89,7 @@ def searchWebsite(searchTerm):
     page = requests.get(requestUrl)
     tree = html.fromstring(page.content)
 
-    name, price, up = webScraping(tree)
-
+    name, price, up, change = webScraping(tree)
 
     # if we get data back from webscarping we just display it
     if(len(name)!=0 or len(price)!=0):
@@ -98,17 +98,10 @@ def searchWebsite(searchTerm):
             stock_ticker = name[:-1]
             del name[-1]
             name = ' '.join(name)
-            return(company(searchTerm, name,price[0],up))
+            return(company(searchTerm, name,price[0],up,change))
             #return ("The price of {0} is ${1}".format(name[0],price[0]))
         except:
             return ("There is no price data on this stock")
 
     # otherwise we have to display the search terms
     return displaySearch(tree)
-
-#def upOrDown(searchTerm):
-#    up =True
-#    requestUrl = 'https://markets.businessinsider.com/searchresults?_search='+searchTerm
-#    page = requests.get(requestUrl)
-#    tree = html.fromstring(page.content)
-#    return
