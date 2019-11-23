@@ -29,6 +29,11 @@ def change():
             lb3.config(text="▲"+company_data.change,fg="green")
         else:
             lb3.config(text = "▼"+ company_data.change,fg="red")
+        index = 0
+        for index, row in company_data.news.iterrows():
+            Lb.insert(index,row['title'])
+            index+=1
+
 def func(event):
     change()
 root.bind('<Return>', func)
