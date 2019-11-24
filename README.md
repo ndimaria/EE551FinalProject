@@ -190,4 +190,27 @@ For this project I intend on creating a stock quote tracker. This application wi
     <li>When they were fetched together the program would fail when a search was done instead</li>
   </ul>
   
+  <h3>Append url link to news</h3>
+  <ul>
+    <li>When we grab the news we now also want the link that it comes from</li>
+    <li>In <i>displayNews()</i> method we grab all of the hrefs</li>
+    <li> Then we create another column called <i>urls</i> for the dataframe
+        <ul>
+          <li>Just append the next href to this column every row of the table we loop through</li>
+        </ul>                                                                                                               
+    </li>
+    <li>When iterating through the rows of the dataframe generate a dictionary
+      <ul>
+          <li>Contains both the title of the articles and the url</li>
+      </ul> 
+    </li>
+    <li>Add a button called <i>search</i>
+      <ul>
+          <li>Set to disabled when there are search items in the listbox</li>
+          <li>Set to enabled when there are news items in the listbox</li>
+          <li>When click just prints the url in the terminal for now</li>
+      </ul> 
+    </li>
+  </ul>
 </details>
+
