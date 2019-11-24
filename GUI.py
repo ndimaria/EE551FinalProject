@@ -5,7 +5,10 @@ import pandas as pd
 
 root = tk.Tk()
 root.title('Stock Market')
+dict = {}
+
 def change():
+
     try:
         words = Lb.get(Lb.curselection()).split()
         stock_ticker = words[-1]
@@ -16,6 +19,7 @@ def change():
     company_data = FP.searchWebsite(stock_ticker)
 
     if isinstance(company_data, pd.core.frame.DataFrame):
+        cb1.config(state= tk.DISABLED)
         Lb.delete(0,'end')
         for index, row in company_data.iterrows():
             Lb.insert(index, row['Name'] + " " + row['Symbol'])
@@ -30,13 +34,19 @@ def change():
         else:
             lb3.config(text = "▼"+ company_data.change,fg="red")
         index = 0
+
+        cb1.config(state="normal")
         for index, row in company_data.news.iterrows():
+            dict[row['title']] = row['url']
             Lb.insert(index,row['title'])
             index+=1
 
 def func(event):
     change()
 root.bind('<Return>', func)
+
+def search():
+    print(dict[Lb.get(Lb.curselection())])
 
 lb1 = tk.Label(root, text='Enter stock ticker:').grid(row=0)
 
@@ -55,5 +65,8 @@ lb3.grid(row=4)
 
 Lb = tk.Listbox(width=50)
 Lb.grid(row=5)
+
+cb1 = tk.Button(root,text = "Search", command = search, justify='right',state=tk.DISABLED)
+cb1.grid(row=6)
 
 root.mainloop()
