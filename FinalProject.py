@@ -25,11 +25,12 @@ def webScraping(tree):
     name = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[1]/h1/span[1]/text()')
     price = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[1]/span/text()')
     image = tree.xpath('//*[@class="icon-set change-indicator-arrow arrow-up-big"]')
-    change = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[1]/span/text()')[0] + " " + tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[2]/span/text()')[0]
+    changeNumber = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[1]/span/text()')
+    changePercent = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[2]/span/text()')
     if len(image) == 0:
         up = False
     news = displayNews(tree)
-    return name, price, up, change,news
+    return name, price, up, changeNumber, changePercent ,news
 
 def displayNews(tree):
     tr_elements = tree.xpath('//tr')
@@ -136,7 +137,7 @@ def searchWebsite(searchTerm):
     page = requests.get(requestUrl)
     tree = html.fromstring(page.content)
 
-    name, price, up, change, news = webScraping(tree)
+    name, price, up, changeNumber, changePercent, news = webScraping(tree)
 
     # if we get data back from webscarping we just display it
     if(len(name)!=0 or len(price)!=0):
@@ -145,6 +146,7 @@ def searchWebsite(searchTerm):
             stock_ticker = name[:-1]
             del name[-1]
             name = ' '.join(name)
+            change = changeNumber[0] + " " + changePercent[0]
             return(company(searchTerm, name,price[0],up,change,news))
             #return ("The price of {0} is ${1}".format(name[0],price[0]))
         except:
