@@ -7,6 +7,11 @@ root = tk.Tk()
 root.title('Stock Market')
 dict = {}
 
+p1 = tk.PhotoImage(file = '/home/nicholasdimaria/Documents/EE551/EE551FinalProject/stock-market-icon-59.png')
+
+# Setting icon of master window
+root.iconphoto(False, p1)
+
 def change():
 
     try:
