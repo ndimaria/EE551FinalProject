@@ -1,9 +1,8 @@
 # EE551FinalProject #
-This repository will contain code relevant to my EE551 Engineering Programming: Python class.
+This repository will contain code relevant to Nicholas DiMaria's EE551 Engineering Programming: Python class final project
 
 ## Description ##
-For this project I intend on creating a stock quote tracker. This application will allow a user to enter a symbol for a stock that they are curious about the price. The program will return the price possibly within a GUI that will have a green or red arrow depending on if the price is up or down for that day. In addtion, a user will be able to select how often they want to be notified about the stock price. The application will then emit a pop up or message with the stock price for every specified amount of time that the user wants.
-
+For this project I created a stock quote tracker. This application will allow a user to enter a symbol for a stock that they are curious about the price. The program will return the price that will have a green or red arrow depending on if the price is up or down for that day. It also allows you to enter the name of company and will return search results for that company. Finally it returns the news for a stock. (Maybe adding this: In addtion, a user will be able to select how often they want to be notified about the stock price. The application will then emit a pop up or message with the stock price for every specified amount of time that the user wants)
 
 ## Commits ##
 <details>
@@ -211,6 +210,11 @@ For this project I intend on creating a stock quote tracker. This application wi
           <li>When click just prints the url in the terminal for now</li>
       </ul> 
     </li>
+  </ul>
+  
+  <h3>Add Icon</h3>
+  <ul>
+  <li>Just adding an icon for the application</li>
   </ul>
 </details>
 
