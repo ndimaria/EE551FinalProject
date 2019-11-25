@@ -2,7 +2,10 @@ import tkinter as tk
 import FinalProject as FP
 from tkinter import StringVar, IntVar
 import pandas as pd
+from urllib.request import urlopen
+import webbrowser
 
+new = 1
 root = tk.Tk()
 root.title('Stock Market')
 dict = {}
@@ -51,7 +54,11 @@ def func(event):
 root.bind('<Return>', func)
 
 def search():
-    print(dict[Lb.get(Lb.curselection())])
+    url = dict[Lb.get(Lb.curselection())]
+    #this accounts for when the article is on their own website
+    if "/news/stock" in url:
+        url = "https://markets.businessinsider.com/" + url
+    webbrowser.open(url,new=new)
 
 lb1 = tk.Label(root, text='Enter stock ticker:').grid(row=0)
 
@@ -70,6 +77,7 @@ lb3.grid(row=4)
 
 Lb = tk.Listbox(width=50)
 Lb.grid(row=5)
+
 
 cb1 = tk.Button(root,text = "Search", command = search, justify='right',state=tk.DISABLED)
 cb1.grid(row=6)
