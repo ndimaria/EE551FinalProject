@@ -43,7 +43,7 @@ def displayNews(tree):
 
     col.append(("title",[]))
     col.append(("url",[]))
-    for j in range(1,len(tr_elements)):
+    for j in range(0,len(tr_elements)):
         # T is our j'th row
         T=tr_elements[j]
 
@@ -58,7 +58,7 @@ def displayNews(tree):
         for t in T.iterchildren():
             data=t.text_content()
             data=' '.join(data.split())
-    
+
             # Check if row is empty
             if i>0:
             # Convert any numerical value to integers
