@@ -20,7 +20,7 @@ root.iconphoto(False, p1)
 def change():
 
     try:
-        words = Lb.get(Lb.curselection()).split()
+        words = SearchResults.get(SearchResults.curselection()).split()
         stock_ticker = words[-1]
     except:
         stock_ticker = e1.get()
@@ -31,17 +31,21 @@ def change():
         lb2.config(text = "Please select the stock from the list below:")
         lb3.config(text = "Click okay button when stock selected", fg = "black")
         cb1.config(state= tk.DISABLED)
-        Lb.delete(0,'end')
+        NewsResults.grid_forget()
+        SearchResults.grid(row=5)
+        SearchResults.delete(0,'end')
         for index, row in company_data.iterrows():
-            Lb.insert(index, row['Name'] + " " + row['Symbol'])
+            SearchResults.insert(index, row['Name'] + " " + row['Symbol'])
     else:
-        Lb.delete(0,'end')
+        NewsResults.delete(0,'end')
+        SearchResults.grid_forget()
+        NewsResults.grid(row=5)
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
         lb2.config(text = company_data.getData())
         global news
         news = True
-        print(news)
+        
         if(company_data.up):
             lb3.config(text="▲"+company_data.change,fg="green")
         else:
@@ -52,7 +56,7 @@ def change():
         cb1.config(state="normal")
         for index, row in company_data.news.iterrows():
             dict[row['title']] = row['url']
-            Lb.insert(index,row['title'])
+            NewsResults.insert(index,row['title'])
             index+=1
 
 def func(event):
@@ -64,7 +68,7 @@ def func(event):
 root.bind('<Return>', func)
 
 def search():
-    url = dict[Lb.get(Lb.curselection())]
+    url = dict[NewsResults.get(NewsResults.curselection())]
     #this accounts for when the article is on their own website
     if "/news/stock" in url:
         url = "https://markets.businessinsider.com/" + url
@@ -72,7 +76,9 @@ def search():
 
 def callback(sv):
     cb.config(state="normal")
-    Lb.selection_clear(0, 'end')
+    SearchResults.selection_clear(0, 'end')
+    NewsResults.selection_clear(0, 'end')
+
     global news
     news = False
 
@@ -94,8 +100,11 @@ lb2.grid(row=3)
 lb3 = tk.Label(root)
 lb3.grid(row=4)
 
-Lb = tk.Listbox(width=50)
-Lb.grid(row=5)
+SearchResults = tk.Listbox(width=50)
+SearchResults.grid(row=5)
+
+NewsResults = tk.Listbox(width=50)
+NewsResults.grid(row=5)
 
 cb1 = tk.Button(root,text = "Search", command = search, justify='right',state=tk.DISABLED)
 cb1.grid(row=6)
