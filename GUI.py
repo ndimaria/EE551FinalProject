@@ -9,6 +9,9 @@ root = tk.Tk()
 root.title('Stock Market')
 dict = {}
 
+labels = []
+buttons = []
+
 global news
 news = False
 
@@ -30,22 +33,22 @@ def change():
     if isinstance(company_data, pd.core.frame.DataFrame):
         lb2.config(text = "Please select the stock from the list below:")
         lb3.config(text = "Click okay button when stock selected", fg = "black")
-        cb1.config(state= tk.DISABLED)
-        NewsResults.grid_forget()
+        #cb1.config(state= tk.DISABLED)
+        #NewsResults.grid_forget()
         SearchResults.grid(row=5)
         SearchResults.delete(0,'end')
         for index, row in company_data.iterrows():
             SearchResults.insert(index, row['Name'] + " " + row['Symbol'])
     else:
-        NewsResults.delete(0,'end')
+        #NewsResults.delete(0,'end')
         SearchResults.grid_forget()
-        NewsResults.grid(row=5)
+        #NewsResults.grid(row=5)
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
         lb2.config(text = company_data.getData())
         global news
         news = True
-        
+
         if(company_data.up):
             lb3.config(text="▲"+company_data.change,fg="green")
         else:
@@ -53,11 +56,20 @@ def change():
         index = 0
 
         cb.config(state=tk.DISABLED)
-        cb1.config(state="normal")
+        #cb1.config(state="normal")
+        indexNum =0
+        rowNum = 5
+
         for index, row in company_data.news.iterrows():
+            print(rowNum,indexNum)
             dict[row['title']] = row['url']
-            NewsResults.insert(index,row['title'])
-            index+=1
+            labels.append(tk.Message(root, text=row['title']).grid(row=rowNum, column=indexNum))
+            buttons.append(tk.Button(root,text="Go to Website").grid(row=rowNum+1, column=indexNum))
+            if (indexNum % 2) ==1 :
+                indexNum = 0
+                rowNum +=2
+            else:
+                indexNum +=1
 
 def func(event):
     global news
@@ -77,7 +89,7 @@ def search():
 def callback(sv):
     cb.config(state="normal")
     SearchResults.selection_clear(0, 'end')
-    NewsResults.selection_clear(0, 'end')
+    #NewsResults.selection_clear(0, 'end')
 
     global news
     news = False
@@ -85,28 +97,28 @@ def callback(sv):
 sv = StringVar()
 sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
 
-lb1 = tk.Label(root, text='Enter stock ticker:').grid(row=0)
+lb1 = tk.Label(root, text='Enter stock ticker:').grid(row=0,columnspan=2)
 
 e1 = tk.Entry(root, textvariable=sv)
-e1.grid(row=1)
+e1.grid(row=1,columnspan =2)
 e1.focus()
 
 cb = tk.Button(root, text = "OK", command=change, justify ='center')
-cb.grid(row=2)
+cb.grid(row=2,columnspan=2)
 
 lb2 = tk.Label(root, text = "Stock data will display here.", justify='center')
-lb2.grid(row=3)
+lb2.grid(row=3,columnspan=2)
 
 lb3 = tk.Label(root)
-lb3.grid(row=4)
+lb3.grid(row=4,columnspan=2)
 
 SearchResults = tk.Listbox(width=50)
 SearchResults.grid(row=5)
 
-NewsResults = tk.Listbox(width=50)
-NewsResults.grid(row=5)
+#NewsResults = tk.Listbox(width=50)
+#NewsResults.grid(row=5)
 
-cb1 = tk.Button(root,text = "Search", command = search, justify='right',state=tk.DISABLED)
-cb1.grid(row=6)
+#cb1 = tk.Button(root,text = "Search", command = search, justify='right',state=tk.DISABLED)
+#cb1.grid(row=6)
 
 root.mainloop()
