@@ -5,10 +5,12 @@ import pandas as pd
 from urllib.request import urlopen
 import webbrowser
 
-new = 1
 root = tk.Tk()
 root.title('Stock Market')
 dict = {}
+
+global news
+news = False
 
 p1 = tk.PhotoImage(file = 'stock-market-icon-59.png')
 
@@ -20,13 +22,14 @@ def change():
     try:
         words = Lb.get(Lb.curselection()).split()
         stock_ticker = words[-1]
-
     except:
         stock_ticker = e1.get()
 
     company_data = FP.searchWebsite(stock_ticker)
 
     if isinstance(company_data, pd.core.frame.DataFrame):
+        lb2.config(text = "Please select the stock from the list below:")
+        lb3.config(text = "Click okay button when stock selected", fg = "black")
         cb1.config(state= tk.DISABLED)
         Lb.delete(0,'end')
         for index, row in company_data.iterrows():
@@ -36,13 +39,16 @@ def change():
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
         lb2.config(text = company_data.getData())
-
+        global news
+        news = True
+        print(news)
         if(company_data.up):
             lb3.config(text="▲"+company_data.change,fg="green")
         else:
             lb3.config(text = "▼"+ company_data.change,fg="red")
         index = 0
 
+        cb.config(state=tk.DISABLED)
         cb1.config(state="normal")
         for index, row in company_data.news.iterrows():
             dict[row['title']] = row['url']
@@ -50,7 +56,11 @@ def change():
             index+=1
 
 def func(event):
-    change()
+    global news
+    if(not news):
+        change()
+    else:
+        search()
 root.bind('<Return>', func)
 
 def search():
@@ -58,11 +68,20 @@ def search():
     #this accounts for when the article is on their own website
     if "/news/stock" in url:
         url = "https://markets.businessinsider.com/" + url
-    webbrowser.open(url,new=new)
+    webbrowser.open(url,new=0)
+
+def callback(sv):
+    cb.config(state="normal")
+    Lb.selection_clear(0, 'end')
+    global news
+    news = False
+
+sv = StringVar()
+sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
 
 lb1 = tk.Label(root, text='Enter stock ticker:').grid(row=0)
 
-e1 = tk.Entry(root)
+e1 = tk.Entry(root, textvariable=sv)
 e1.grid(row=1)
 e1.focus()
 
@@ -77,7 +96,6 @@ lb3.grid(row=4)
 
 Lb = tk.Listbox(width=50)
 Lb.grid(row=5)
-
 
 cb1 = tk.Button(root,text = "Search", command = search, justify='right',state=tk.DISABLED)
 cb1.grid(row=6)

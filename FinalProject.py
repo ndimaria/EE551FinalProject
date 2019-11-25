@@ -40,7 +40,6 @@ def displayNews(tree):
     i=0
     hrefs = tree.xpath('//a[@class="news-link"]')
 
-
     col.append(("title",[]))
     col.append(("url",[]))
     for j in range(0,len(tr_elements)):
