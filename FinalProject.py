@@ -14,7 +14,7 @@ class company(object):
     def __str__(self):
         return("The price of {0} ({1}) is ${2}".format(self.name, self.stock_ticker, self.price))
     def getData(self):
-        return("The price of {0} ({1}) is ${2}".format(self.name, self.stock_ticker, self.price))
+        return(self.name, self.stock_ticker, self.price)
 
 """
 Basic web scraping grabs the name of the stock
@@ -49,12 +49,8 @@ def displayNews(tree):
         # T is our j'th row
         T=tr_elements[j]
 
-        # If row is not of size 3, the //tr data is not from our table
         if len(T)!=1:
             break
-
-        # i is the index of our column
-        i=0
 
         # Iterate through each element of the row
         for t in T.iterchildren():
@@ -65,10 +61,9 @@ def displayNews(tree):
                     data=int(data)
                 except:
                     pass
-            # Append the data to the empty list of the i'th column
+            # Append the titles, url, and websites to correct columns
             col[0][1].append(titles[j].text_content())
             col[1][1].append(hrefs[j].attrib['href'])
-
             col[2][1].append(websites[j+2])
             websites.pop(j+3)
 
@@ -138,7 +133,7 @@ def searchWebsite(searchTerm):
 
     name, price, up, changeNumber, changePercent, news = webScraping(tree)
 
-    # if we get data back from webscarping we just display it
+    # if we get data back from webscarping we return a company object
     if(len(name)!=0 or len(price)!=0):
         try:
             name = name[0].split()
@@ -147,7 +142,6 @@ def searchWebsite(searchTerm):
             name = ' '.join(name)
             change = changeNumber[0] + " " + changePercent[0]
             return(company(searchTerm, name,price[0],up,change,news))
-            #return ("The price of {0} is ${1}".format(name[0],price[0]))
         except:
             return ("There is no price data on this stock")
 

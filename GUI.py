@@ -1,6 +1,7 @@
 import tkinter as tk
 import FinalProject as FP
 from tkinter import StringVar, IntVar
+import tkinter.ttk as ttk
 import pandas as pd
 from urllib.request import urlopen
 import webbrowser
@@ -33,8 +34,10 @@ def change():
     labels.clear()
     buttons.clear()
     if isinstance(company_data, pd.core.frame.DataFrame):
+        newsTitle.grid_forget()
+        separator.grid_forget()
         lb2.config(text = "Please select the stock from the list below:")
-        lb3.config(text = "Click okay button when stock selected", fg = "black")
+        lb3.config(text = "Click 'OK' button when stock selected", fg = "black")
         SearchResults.grid(row=5)
         SearchResults.delete(0,'end')
         for index, row in company_data.iterrows():
@@ -43,22 +46,26 @@ def change():
         SearchResults.grid_forget()
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
-        lb2.config(text = company_data.getData())
-
+        name, stock_ticker, price = company_data.getData()
+        lb2.config(text = name.upper()+" ("+stock_ticker+")",font='Helvetica 18 bold')
+        priceLabel.config(text="$"+price)
         if(company_data.up):
-            lb3.config(text="▲"+company_data.change,fg="green")
+            lb3.config(text="▲" + "$" +company_data.change,fg="green")
         else:
-            lb3.config(text = "▼"+ company_data.change,fg="red")
+            lb3.config(text = "▼" + "$" +company_data.change,fg="red")
         index = 0
+
+        newsTitle.grid(row=6, columnspan=2)
+        separator2.grid(row=7, columnspan=2, sticky="we")
 
         cb.config(state=tk.DISABLED)
         indexNum =0
-        rowNum = 5
+        rowNum = 8
 
         for index, row in company_data.news.iterrows():
             dict[row['title']] = row['url']
-            labels.append(tk.Message(root, text=row['title']))
-            labels[index].grid(row=rowNum, column=indexNum)
+            labels.append(tk.Label(root, text=row['title'],wraplength=200))
+            labels[index].grid(row=rowNum, column=indexNum,padx=10)
             buttons.append(tk.Button(root,text=row['website']))
             buttons[index].configure(command = functools.partial(search, row['url']))
             buttons[index].grid(row=rowNum+1, column=indexNum)
@@ -95,12 +102,21 @@ cb = tk.Button(root, text = "OK", command=change, justify ='center')
 cb.grid(row=2,columnspan=2)
 
 lb2 = tk.Label(root, text = "Stock data will display here.", justify='center')
-lb2.grid(row=3,columnspan=2)
+lb2.grid(row=4,columnspan=2,sticky=tk.N+tk.E+tk.W+tk.S)
 
-lb3 = tk.Label(root)
-lb3.grid(row=4,columnspan=2)
+priceLabel =tk.Label(root,justify="center",font='Helvetica 18')
+priceLabel.grid(row=5, column=0,sticky =tk.N+tk.E+tk.W+tk.S)
+
+lb3 = tk.Label(root,justify="center")
+lb3.grid(row=5, column=1, sticky =tk.N+tk.E+tk.W+tk.S)
 
 SearchResults = tk.Listbox(width=50)
-SearchResults.grid(row=5)
+SearchResults.grid(row=6)
+
+newsTitle = tk.Label(root, text="News", font=22)
+
+separator1 = ttk.Separator(root, orient="horizontal")
+separator2 = ttk.Separator(root, orient="horizontal")
+
 
 root.mainloop()
