@@ -214,7 +214,106 @@ For this project I created a stock quote tracker. This application will allow a 
   
   <h3>Add Icon</h3>
   <ul>
-  <li>Just adding an icon for the application</li>
+    <li>Just adding an icon for the application</li>
   </ul>
+  
+  <h3>Small Changes</h3> 
+  <ul>
+    <li>Change the file path of icon</li>
+    <li>Update loop for news from 1 to 0 to include all news articles</li>
+  </ul>
+  
+  <h3>Launch browser on search click</h3> 
+  <ul>
+    <li>Uses <i>webbrowser.open(url,new=new)</i> to launch the browser with the URL of news article that is clicked</li>
+    <li>Have to account for the edge case where the article is on their own website
+      <ul>
+        <li>They usually just point to the file</li>
+        <li>We need to append https://markets.businessinsider.com to the beginning of the url and then it goes to the right place</li>
+        <li>Just a simple if statement </li>
+      </ul>
+    </li>
+  </ul>
+  
+  <h3>Fix button issues</h3> 
+  <ul>
+    <li>Add a global variable called <i>news</i>
+      <ul>
+        <li>Keeps track of if there is news in the listbox</li>
+        <li>If there is news we make the enter button do a search</li>
+      </ul>
+    </li>
+    <li>Also disable the “OK” button when the news is displayed</li>
+    <li>Define a method called <i>callback</i> which is called every time something is changed in the textbox
+      <ul>
+        <li>We clear the listbox selection</li>
+        <li>Re Enable the “OK” button</li>
+        <li>Set news to false</li>
+      </ul>
+    </li>
+    <li>Probably can eliminate the need for all of this we use just use two different listbox (for news and search).
+      <ul>
+        <li>Just hide them when they need to be</li>
+      </ul>
+    </li>
+  </ul>
+  
+  <h3>Make multiple listbox</h3> 
+  <ul>
+    <li>Have news and searches in different listboxes
+      <ul>
+        <li>One is hidden and the other one is shown</li>
+      </ul>
+    </li>
+    <li>Want to make it so the news are labels with buttons beneath </li>
+  </ul>
+  
+  <h3>Start adding labels instead of listbox</h3> 
+  <ul>
+    <li>Instead of a listbox for news, we want labels 
+      <ul>
+        <li>Actually use messages</li>
+        <li>Dynamically create labels (and buttons) for each of the news websites</li>
+      </ul>
+    </li>
+    <li>Arranged in two columns </li>
+    <li>As of right now buttons do nothing</li>
+  </ul>
+  
+  <h3>Dynamically add buttons that go to websites</h3> 
+  <ul>
+    <li>Now add a command to each of the buttons
+      <ul>
+        <li>Calls <i>search()</i> method</li>
+        <li>Uses lambda expression to assign the url needed</li>
+      </ul>
+    </li>
+    <li>Fix url assignment
+      <ul>
+        <li>Was off by one</li>
+      </ul>
+    </li>
+  </ul>
+  
+  <h3>Buttons display website name</h3> 
+  <ul>
+    <li>When we get title of news article and website, also grab the website name
+      <ul>
+        <li>Store as a separate column in pandas dataframe named “websites”</li>
+      </ul>
+    </li>
+    <li>We assign this value to the title of the button</li>
+  </ul>
+  
+  <h3>Fix parsing symbols</h3> 
+  <ul>
+    <li>Simply change <i>html.fromstring(page.content)</i> to <i>html.fromstring(page.text)</i></li>
+  </ul>
+  
+  <h3>General UI Fixes and Part 2</h3> 
+  <ul>
+    <li>Add some padding to the news labels</li>
+    <li>Change around stock, ticker, and prices</li>
+  </ul>
+  
 </details>
-
