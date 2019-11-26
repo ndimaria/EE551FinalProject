@@ -10,6 +10,7 @@ For this project I created a stock quote tracker. This application will allow a 
   <li>sudo apt-get install python3-pandas</li>
   <li>sudo apt-get install python3-tk</li>
 </ul>
+
 ## Commits ##
 <details>
   <summary>Click to see details of commits</summary>
