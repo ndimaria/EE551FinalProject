@@ -13,9 +13,6 @@ dict = {}
 labels = []
 buttons = []
 
-global news
-news = False
-
 p1 = tk.PhotoImage(file = 'stock-market-icon-59.png')
 
 # Setting icon of master window
@@ -47,8 +44,6 @@ def change():
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
         lb2.config(text = company_data.getData())
-        global news
-        news = True
 
         if(company_data.up):
             lb3.config(text="▲"+company_data.change,fg="green")
@@ -61,11 +56,10 @@ def change():
         rowNum = 5
 
         for index, row in company_data.news.iterrows():
-
             dict[row['title']] = row['url']
             labels.append(tk.Message(root, text=row['title']))
             labels[index].grid(row=rowNum, column=indexNum)
-            buttons.append(tk.Button(root,text="Go to Website"))
+            buttons.append(tk.Button(root,text=row['website']))
             buttons[index].configure(command = functools.partial(search, row['url']))
             buttons[index].grid(row=rowNum+1, column=indexNum)
             if (indexNum % 2) ==1 :
@@ -75,11 +69,7 @@ def change():
                 indexNum +=1
 
 def func(event):
-    global news
-    if(not news):
-        change()
-    else:
-        search()
+    change()
 root.bind('<Return>', func)
 
 def search(url):
@@ -91,8 +81,6 @@ def search(url):
 def callback(sv):
     cb.config(state="normal")
     SearchResults.selection_clear(0, 'end')
-    global news
-    news = False
 
 sv = StringVar()
 sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))

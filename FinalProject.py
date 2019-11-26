@@ -39,9 +39,12 @@ def displayNews(tree):
     col=[]
     i=0
     hrefs = tree.xpath('//a[@class="news-link"]')
+    titles = tree.xpath('//a[@class="news-link"]/text()')
+    websites = tree.xpath('//span[@class="warmGrey source-and-publishdate"]/text()')
 
     col.append(("title",[]))
     col.append(("url",[]))
+    col.append(("website",[]))
     for j in range(0,len(tr_elements)):
         # T is our j'th row
         T=tr_elements[j]
@@ -56,8 +59,8 @@ def displayNews(tree):
         # Iterate through each element of the row
         for t in T.iterchildren():
             data=t.text_content()
-            data=' '.join(data.split())
 
+            data=' '.join(data.split())
             # Check if row is empty
             if i>0:
             # Convert any numerical value to integers
@@ -66,11 +69,13 @@ def displayNews(tree):
                 except:
                     pass
             # Append the data to the empty list of the i'th column
-            col[i][1].append(data)
-            col[i+1][1].append(hrefs[j].attrib['href'])
-
+            col[0][1].append(titles[j])
+            col[1][1].append(hrefs[j].attrib['href'])
+            print(websites[j])
+            col[2][1].append(websites[j+2])
+            websites.pop(j+1)
             # Increment i for the next column
-            i+=1
+
 
     Dict={title:column for (title,column) in col}
     df=pd.DataFrame(Dict)
