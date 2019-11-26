@@ -14,7 +14,7 @@ class company(object):
     def __str__(self):
         return("The price of {0} ({1}) is ${2}".format(self.name, self.stock_ticker, self.price))
     def getData(self):
-        return(self.name, self.stock_ticker, self.price)
+        return(self.name.upper(), self.stock_ticker, self.price)
 
 """
 Basic web scraping grabs the name of the stock
