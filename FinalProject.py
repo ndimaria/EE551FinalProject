@@ -39,7 +39,7 @@ def displayNews(tree):
     col=[]
     i=0
     hrefs = tree.xpath('//a[@class="news-link"]')
-    titles = tree.xpath('//a[@class="news-link"]/text()')
+    titles = tree.xpath('//a[@class="news-link"]')
     websites = tree.xpath('//span[@class="warmGrey source-and-publishdate"]/text()')
 
     col.append(("title",[]))
@@ -58,9 +58,6 @@ def displayNews(tree):
 
         # Iterate through each element of the row
         for t in T.iterchildren():
-            data=t.text_content()
-
-            data=' '.join(data.split())
             # Check if row is empty
             if i>0:
             # Convert any numerical value to integers
@@ -69,13 +66,11 @@ def displayNews(tree):
                 except:
                     pass
             # Append the data to the empty list of the i'th column
-            col[0][1].append(titles[j])
+            col[0][1].append(titles[j].text_content())
             col[1][1].append(hrefs[j].attrib['href'])
-            print(websites[j])
-            col[2][1].append(websites[j+2])
-            websites.pop(j+1)
-            # Increment i for the next column
 
+            col[2][1].append(websites[j+2])
+            websites.pop(j+3)
 
     Dict={title:column for (title,column) in col}
     df=pd.DataFrame(Dict)
@@ -139,7 +134,7 @@ This method will actually goes out and hits the website
 def searchWebsite(searchTerm):
     requestUrl = 'https://markets.businessinsider.com/searchresults?_search='+searchTerm
     page = requests.get(requestUrl)
-    tree = html.fromstring(page.content)
+    tree = html.fromstring(page.text)
 
     name, price, up, changeNumber, changePercent, news = webScraping(tree)
 
