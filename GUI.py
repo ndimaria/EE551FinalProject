@@ -4,6 +4,7 @@ from tkinter import StringVar, IntVar
 import pandas as pd
 from urllib.request import urlopen
 import webbrowser
+import functools
 
 root = tk.Tk()
 root.title('Stock Market')
@@ -29,20 +30,20 @@ def change():
         stock_ticker = e1.get()
 
     company_data = FP.searchWebsite(stock_ticker)
-
+    for x in range(0,len(labels)):
+        labels[x].grid_forget()
+        buttons[x].grid_forget()
+    labels.clear()
+    buttons.clear()
     if isinstance(company_data, pd.core.frame.DataFrame):
         lb2.config(text = "Please select the stock from the list below:")
         lb3.config(text = "Click okay button when stock selected", fg = "black")
-        #cb1.config(state= tk.DISABLED)
-        #NewsResults.grid_forget()
         SearchResults.grid(row=5)
         SearchResults.delete(0,'end')
         for index, row in company_data.iterrows():
             SearchResults.insert(index, row['Name'] + " " + row['Symbol'])
     else:
-        #NewsResults.delete(0,'end')
         SearchResults.grid_forget()
-        #NewsResults.grid(row=5)
         e1.delete(0,'end')
         e1.insert(0,stock_ticker)
         lb2.config(text = company_data.getData())
@@ -56,15 +57,17 @@ def change():
         index = 0
 
         cb.config(state=tk.DISABLED)
-        #cb1.config(state="normal")
         indexNum =0
         rowNum = 5
 
         for index, row in company_data.news.iterrows():
-            print(rowNum,indexNum)
+
             dict[row['title']] = row['url']
-            labels.append(tk.Message(root, text=row['title']).grid(row=rowNum, column=indexNum))
-            buttons.append(tk.Button(root,text="Go to Website").grid(row=rowNum+1, column=indexNum))
+            labels.append(tk.Message(root, text=row['title']))
+            labels[index].grid(row=rowNum, column=indexNum)
+            buttons.append(tk.Button(root,text="Go to Website"))
+            buttons[index].configure(command = functools.partial(search, row['url']))
+            buttons[index].grid(row=rowNum+1, column=indexNum)
             if (indexNum % 2) ==1 :
                 indexNum = 0
                 rowNum +=2
@@ -79,8 +82,7 @@ def func(event):
         search()
 root.bind('<Return>', func)
 
-def search():
-    url = dict[NewsResults.get(NewsResults.curselection())]
+def search(url):
     #this accounts for when the article is on their own website
     if "/news/stock" in url:
         url = "https://markets.businessinsider.com/" + url
@@ -89,8 +91,6 @@ def search():
 def callback(sv):
     cb.config(state="normal")
     SearchResults.selection_clear(0, 'end')
-    #NewsResults.selection_clear(0, 'end')
-
     global news
     news = False
 
@@ -114,11 +114,5 @@ lb3.grid(row=4,columnspan=2)
 
 SearchResults = tk.Listbox(width=50)
 SearchResults.grid(row=5)
-
-#NewsResults = tk.Listbox(width=50)
-#NewsResults.grid(row=5)
-
-#cb1 = tk.Button(root,text = "Search", command = search, justify='right',state=tk.DISABLED)
-#cb1.grid(row=6)
 
 root.mainloop()

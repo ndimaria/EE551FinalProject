@@ -67,7 +67,8 @@ def displayNews(tree):
                     pass
             # Append the data to the empty list of the i'th column
             col[i][1].append(data)
-            col[i+1][1].append(hrefs[j-1].attrib['href'])
+            col[i+1][1].append(hrefs[j].attrib['href'])
+
             # Increment i for the next column
             i+=1
 
