@@ -1,7 +1,9 @@
 import FinalProject as FP
+import pandas as pd
 
 """
 We want to run this loop until they type 'exit'
+This is non the GUI version of the application
 """
 while(1):
     searchTerm = input("What stock are you looking for: ")
@@ -9,7 +11,9 @@ while(1):
         break
     company = FP.searchWebsite(searchTerm)
     print(company, end = '\n')
-    print(company.news)
-    print(company.news.shape)
-    #print(FP.searchWebsite(searchTerm) ,end = '\n\n')
-    #print(FP.upOrDown(searchTerm), end = '\n')
+    if (isinstance(company, pd.core.frame.DataFrame)):
+    	print("Which company would you like:")
+    else:
+    	with pd.option_context('display.max_rows',None, 'display.max_columns',None,'display.max_colwidth', -1):
+    		print(company.news)
+

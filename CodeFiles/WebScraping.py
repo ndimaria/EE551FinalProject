@@ -3,6 +3,9 @@ import requests
 import time
 import pandas as pd
 
+"""
+A company class contains all the information important to display for a company's stock
+"""
 class company(object):
     def __init__(self,stock_ticker,name,price,up,change,news):
         self.stock_ticker = stock_ticker
@@ -12,13 +15,12 @@ class company(object):
         self.change = change
         self.news = news
     def __str__(self):
-        return("The price of {0} ({1}) is ${2}".format(self.name, self.stock_ticker, self.price))
+        return("The price of {0} ({1}) is ${2}.".format(self.name, self.stock_ticker, self.price))
     def getData(self):
         return(self.name.upper(), self.stock_ticker, self.price)
 
 """
-Basic web scraping grabs the name of the stock
-as well as the price of the stock from the HTML
+This method grabs all of the information need from the website
 """
 def webScraping(tree):
     up = True
@@ -32,6 +34,9 @@ def webScraping(tree):
     news = displayNews(tree)
     return name, price, up, changeNumber, changePercent ,news
 
+"""
+This method contains the web scarping for the news tables
+"""
 def displayNews(tree):
     tr_elements = tree.xpath('//tr')
     if(len(tr_elements)==0):
@@ -73,7 +78,7 @@ def displayNews(tree):
     return df
 
 """
-From this we want to grab all of the results
+From this we want to grab all of the results from the table
 when a search term is entered. Used this
 https://towardsdatascience.com/web-scraping-html-tables-with-python-c9baba21059
 """
@@ -124,7 +129,9 @@ def displaySearch(tree):
     return df[['Name','Symbol']].loc[df['Symbol'] != '']
 
 """
-This method will actually goes out and hits the website
+This method will actually go out and hit the website
+We return a company class, if the website finds the stock ticker
+Otherwise it returns a pandas dataframe.
 """
 def searchWebsite(searchTerm):
     requestUrl = 'https://markets.businessinsider.com/searchresults?_search='+searchTerm

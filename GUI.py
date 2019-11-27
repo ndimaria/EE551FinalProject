@@ -1,5 +1,10 @@
+import sys
+# insert at 1, 0 is the script path (or '' in REPL)
+sys.path.insert(1, 'CodeFiles')
+
+import WebScraping as FP
+
 import tkinter as tk
-import FinalProject as FP
 from tkinter import StringVar, IntVar
 import tkinter.ttk as ttk
 import pandas as pd
@@ -14,11 +19,14 @@ dict = {}
 labels = []
 buttons = []
 
-p1 = tk.PhotoImage(file = 'stock-market-icon-59.png')
+p1 = tk.PhotoImage(file = 'Images/stock-market-icon-59.png')
 
 # Setting icon of master window
 root.iconphoto(False, p1)
 
+"""
+This method is called when the "OK" or enter button are clicked
+"""
 def change():
 
     try:
@@ -28,16 +36,18 @@ def change():
         stock_ticker = e1.get()
 
     company_data = FP.searchWebsite(stock_ticker)
+    
     for x in range(0,len(labels)):
         labels[x].grid_forget()
         buttons[x].grid_forget()
     labels.clear()
     buttons.clear()
+    
     if isinstance(company_data, pd.core.frame.DataFrame):
         newsTitle.grid_forget()
-        separator.grid_forget()
+        separator2.grid_forget()
         lb2.config(text = "Please select the stock from the list below:")
-        lb3.config(text = "Click 'OK' button when stock selected", fg = "black")
+        lb3.grid_forget()
         SearchResults.grid(row=5)
         SearchResults.delete(0,'end')
         for index, row in company_data.iterrows():
@@ -53,6 +63,7 @@ def change():
             lb3.config(text="▲" + "$" +company_data.change,fg="green")
         else:
             lb3.config(text = "▼" + "$" +company_data.change,fg="red")
+        lb3.grid(row=5, column=1)
         index = 0
 
         newsTitle.grid(row=6, columnspan=2)
@@ -75,16 +86,26 @@ def change():
             else:
                 indexNum +=1
 
+"""
+This routes the enter button click to the change function
+"""
 def func(event):
     change()
 root.bind('<Return>', func)
 
+"""
+This launches the web browser with the URL specified
+"""
 def search(url):
     #this accounts for when the article is on their own website
     if "/news/stock" in url:
         url = "https://markets.businessinsider.com/" + url
     webbrowser.open(url,new=0)
 
+"""
+Reacts to the callback of the entry box 
+Just sets the button state back to normal and clears selection in selection list
+"""
 def callback(sv):
     cb.config(state="normal")
     SearchResults.selection_clear(0, 'end')
@@ -111,7 +132,7 @@ lb3 = tk.Label(root,justify="center")
 lb3.grid(row=5, column=1, sticky =tk.N+tk.E+tk.W+tk.S)
 
 SearchResults = tk.Listbox(width=50)
-SearchResults.grid(row=6)
+#SearchResults.grid(row=6)
 
 newsTitle = tk.Label(root, text="News", font=22)
 
