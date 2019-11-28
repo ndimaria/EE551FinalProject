@@ -75,7 +75,7 @@ def change():
 
         for index, row in company_data.news.iterrows():
             dict[row['title']] = row['url']
-            labels.append(tk.Label(root, text=row['title'],wraplength=200))
+            labels.append(tk.Label(root, text=row['title'],wraplength=400))
             labels[index].grid(row=rowNum, column=indexNum,padx=10)
             buttons.append(tk.Button(root,text=row['website']))
             buttons[index].configure(command = functools.partial(search, row['url']))

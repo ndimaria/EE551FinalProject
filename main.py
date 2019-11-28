@@ -1,4 +1,8 @@
-import FinalProject as FP
+import sys
+# insert at 1, 0 is the script path (or '' in REPL)
+sys.path.insert(1, 'CodeFiles')
+
+import WebScraping as FP
 import pandas as pd
 
 """
