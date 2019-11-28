@@ -1,15 +1,36 @@
 # EE551FinalProject #
-This repository will contain code relevant to Nicholas DiMaria's EE551 Engineering Programming: Python class final project
+This repository will contain code relevant to Nicholas DiMaria's EE551 Engineering Programming: Python final project.
 
 ## Description ##
-For this project I created a stock quote tracker. This application will allow a user to enter a symbol for a stock that they are curious about the price. The program will return the price that will have a green or red arrow depending on if the price is up or down for that day. It also allows you to enter the name of company and will return search results for that company. Finally it returns the news for a stock. (Maybe adding this: In addtion, a user will be able to select how often they want to be notified about the stock price. The application will then emit a pop up or message with the stock price for every specified amount of time that the user wants)
+For this project I created a stock quote tracker. This application will allow a user to enter a symbol, or the name of a company that they are curious about the stock price. The program scrapes https://markets.businessinsider.com for all the information. If a stock ticker is entered, the programs displays the price, how much the price has changed (both percent and dollar amount), as well as the news. The news is displayed with a button below each news header to go to that website. If a company name is entered the search results for that company name are returned. 
 
-## Installations ##
-<ul>
-  <li>sudo apt-get install python3-lxml</li>
-  <li>sudo apt-get install python3-pandas</li>
-  <li>sudo apt-get install python3-tk</li>
-</ul>
+## How to install ##
+To download this application just clone this repository. Then install the following:
+* `sudo apt-get install python3-lxml`
+* `sudo apt-get install python3-pandas`
+* `sudo apt-get install python3-tk`
+
+## How to run application ##
+### GUI application ###
+In the main folder just run `python3 GUI.py`
+![GUI Picture](/Images/GUI.png)
+
+### Non-GUI application ###
+In the main folder just run `python3 main.py`
+![Non-GUI Picture](/Images/NonGUI.png)
+
+## How to use application ##
+With the programming running perform the following steps:
+* Type the stock ticker or company name in the entry box
+* Click the "OK" button or hit enter
+
+If entered a stock ticker:
+* Click the button below the news article you are interested in 
+  * This will open a browser tab to the news article 
+  
+If entered a company name:
+* Select the company you would like from the listbox
+* Click "OK" button or enter again
 
 ## Commits ##
 <details>
@@ -323,4 +344,25 @@ For this project I created a stock quote tracker. This application will allow a 
     <li>Change around stock, ticker, and prices</li>
   </ul>
   
+  <h3>Fix File Structure</h3> 
+  <ul>
+    <li>Add folders to make application easier to understand
+      <ul>
+        <li>Had to change some of the imports in code</li>
+      </ul>
+    </li>
+    <li>Add a few tests for <i>company</i> class</li>
+    <li>Add comments for all methods</li>
+  </ul>
+  
+  <h3>Small Fixes</h3>
+  <ul>
+    <li>Change the wrap size of the news articles</li>
+    <li>Update file path in main.py</li>
+  </ul>
+  
+  <h3>Add Screenshots</h3>
+  <ul>
+  <li>Add screenshots for the application for the GitHub page</li>
+  </ul>
 </details>
