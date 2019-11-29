@@ -2,6 +2,7 @@ from lxml import html
 import requests
 import time
 import pandas as pd
+import xml.etree.ElementTree as etree
 
 """
 A company class contains all the information important to display for a company's stock
@@ -18,22 +19,89 @@ class company(object):
         return("The price of {0} ({1}) is ${2}.".format(self.name, self.stock_ticker, self.price))
     def getData(self):
         return(self.name.upper(), self.stock_ticker, self.price)
+    
+def frontPageScrape():
+    requestUrl = 'https://markets.businessinsider.com'
+    page = requests.get(requestUrl)
+    tree = html.fromstring(page.text)
+    
+    DOWImage = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[2]/span')
+    SPImage = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[2]/span')
+    NASImage = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[2]/span')
+    
+    up = []
+    up.append(True)
+    up.append(True)
+    up.append(True)
+    image = tree.xpath('//*[@class="icon-set arrow-down"]')
+    if len(image) == 3:
+        for i in range(0,3):
+            up[i] = False
+    elif len(image) ==2:
+        if etree.tostring(image[0]) == etree.tostring(DOWImage[0]):
+            up[0]=False
+            if etree.tostring(image[1]) == etree.tostring(SPImage[0]):
+                up[1]=False
+            else:
+                up[2]=False
+        else:
+            up[1] = False
+            up[2] = False
+    elif len(image) == 1:
+        if etree.tostring(image[0]) == etree.tostring(DOWImage[0]):
+            up[0]=False
+        elif etree.tostring(image[0]) == etree.tostring(SPImage[0]):
+            up[1]=False
+        else:
+            up[2] = False
+    
+    name = []
+    name.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[1]/a/text()'))
+    name.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[1]/a/text()'))
+    name.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[1]/a/text()'))
+    
+    price = []
+    price.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[4]/div/span/text()'))
+    price.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[4]/div/span/text()'))
+    price.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[4]/div/span/text()'))
+    
+    changeNumber= []
+    changeNumber.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[2]/div/span/text()'))
+    changeNumber.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[2]/div/span/text()'))
+    changeNumber.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[2]/div/span/text()'))
+    
+    changePercent = []
+    changePercent.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[5]/div/span/text()'))
+    changePercent.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[5]/div/span/text()'))
+    changePercent.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[5]/div/span/text()'))
+    
+    news = None
+
+    # if we get data back from webscarping we return a company object
+    if(len(name)!=0 or len(price)!=0):
+        change = []
+        change.append(changeNumber[0][0] + " " + changePercent[0][0])
+        change.append(changeNumber[1][0] + " " + changePercent[1][0])
+        change.append(changeNumber[2][0] + " " + changePercent[2][0])
+        return(company("DOW", name[0][0],price[0][0],up[0],change[0],news),company("S&P",name[1][0],price[1][0],up[1],change[1], news),\
+         company("NASDAQ", name[2][0],price[2][0] ,up[2] ,change[2],news))
 
 """
 This method grabs all of the information need from the website
 """
 def webScraping(tree):
     up = True
+    image = tree.xpath('//*[@class="icon-set change-indicator-arrow arrow-up-big"]')
     name = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[1]/h1/span[1]/text()')
     price = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[1]/span/text()')
-    image = tree.xpath('//*[@class="icon-set change-indicator-arrow arrow-up-big"]')
     changeNumber = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[1]/span/text()')
     changePercent = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[2]/span/text()')
+    news = displayNews(tree)
+   
+        
     if len(image) == 0:
         up = False
-    news = displayNews(tree)
     return name, price, up, changeNumber, changePercent ,news
-
 """
 This method contains the web scarping for the news tables
 """
