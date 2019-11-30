@@ -363,6 +363,24 @@ If entered a company name:
   
   <h3>Add Screenshots</h3>
   <ul>
-  <li>Add screenshots for the application for the GitHub page</li>
+      <li>Add screenshots for the application for the GitHub page</li>
+  </ul>
+  
+  <h3>Make Layouts Classes and Add Front Page</h3>
+  <ul>
+      <li><i>Example</i> class contains the main layout for the application</li>
+      <li><i>CustomWidget</i> class contains the widget for displaying stock data
+      <ul>
+        <li>Label for stock name</li>
+       <li>Label for stock price/li>
+       <li>Label for stock price change</li>
+      </ul>
+      </li>
+      <li>Front Page contatins data on DOW, S&P 500, and NASDAQ on page load</li>
+  </ul>
+  
+  <h3>Small Changes</h3>
+  <ul>
+     <li>URLs off by one</li>
   </ul>
 </details>
