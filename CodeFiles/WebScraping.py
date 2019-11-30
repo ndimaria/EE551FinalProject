@@ -137,8 +137,8 @@ def displayNews(tree):
             # Append the titles, url, and websites to correct columns
             col[0][1].append(titles[j].text_content())
             col[1][1].append(hrefs[j].attrib['href'])
-            col[2][1].append(websites[j+2])
-            websites.pop(j+3)
+            col[2][1].append(websites[j])
+            websites.pop(j+1)
 
     Dict={title:column for (title,column) in col}
     df=pd.DataFrame(Dict)
