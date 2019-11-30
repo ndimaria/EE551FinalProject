@@ -372,7 +372,7 @@ If entered a company name:
       <li><i>CustomWidget</i> class contains the widget for displaying stock data
       <ul>
         <li>Label for stock name</li>
-       <li>Label for stock price/li>
+       <li>Label for stock price</li>
        <li>Label for stock price change</li>
       </ul>
       </li>
