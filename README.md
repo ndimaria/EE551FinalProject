@@ -32,6 +32,21 @@ If entered a company name:
 * Select the company you would like from the listbox
 * Click "OK" button or enter again 
 
+## Testing ##
+### Description ###
+There is a test file that contains two tests. These tests ensure the following:
+1. Valid data is returned when passing a stock ticker (specifically "AAPL")
+    1. Checks the company stock ticker returned is "AAPL"
+    2. Checks the company name is "Apple"
+    3. Checks that the price of the stock is greater than 0 
+    4. Checks that the company news is a pandas dataframe
+    5. Checks that the "change" price in percent and dollars is something similar to "200.00 (1.10%)"
+2. A pandas dataframe is returned when a company name is passed (specifically "Apple")
+
+### How to Run ###
+* cd to "Tests" folder
+* run `python3 -m pytest tests.py`
+
 ## Commits ##
 <details>
   <summary>Click to see details of commits</summary>
