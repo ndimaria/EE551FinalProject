@@ -394,8 +394,25 @@ There is a test file that contains two tests. These tests ensure the following:
       <li>Front Page contatins data on DOW, S&P 500, and NASDAQ on page load</li>
   </ul>
   
-  <h3>Small Changes</h3>
+  <h3>Fix Links</h3>
   <ul>
      <li>URLs off by one</li>
+  </ul>
+  
+  <h3>Fix Testing</h3>
+  <ul>
+     <li>Had to fix import for WebScraping file</li>
+  </ul>
+  
+  <h3>Fix edge case where stock does not have price data</h3>
+  <ul>
+     <li>Not all stocks have price data on this website</li>
+     <li>Account for this by returning "No price data" if none is found in <i>WebScraping</i></li>
+     <li>Have to account for this in the <i>GUI.py</i>
+         <ul>
+          <li>Just add an if statement to check if <i>company_data.price</i> is "No price data"</li>
+          <li>Can then fix formatting accordingly</li>
+         </ul>
+     </li>
   </ul>
 </details>
