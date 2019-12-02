@@ -1,4 +1,8 @@
-import FinalProject as FP
+import sys
+# insert at 1, 0 is the script path (or '' in REPL)
+sys.path.insert(1, '../CodeFiles')
+
+import WebScraping as FP
 import pandas as pd
 from difflib import SequenceMatcher
 
@@ -23,6 +27,3 @@ This will check if we do a search instead that a DataFrame is returned
 def test_search():
     data = FP.searchWebsite("Apple")
     assert isinstance(data, pd.core.frame.DataFrame)
-    
-    
-
