@@ -19,16 +19,16 @@ class company(object):
         return("The price of {0} ({1}) is ${2}.".format(self.name, self.stock_ticker, self.price))
     def getData(self):
         return(self.name.upper(), self.stock_ticker, self.price)
-    
+
 def frontPageScrape():
     requestUrl = 'https://markets.businessinsider.com'
     page = requests.get(requestUrl)
     tree = html.fromstring(page.text)
-    
+
     DOWImage = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[2]/span')
     SPImage = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[2]/span')
     NASImage = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[2]/span')
-    
+
     up = []
     up.append(True)
     up.append(True)
@@ -54,27 +54,27 @@ def frontPageScrape():
             up[1]=False
         else:
             up[2] = False
-    
+
     name = []
     name.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[1]/a/text()'))
     name.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[1]/a/text()'))
     name.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[1]/a/text()'))
-    
+
     price = []
     price.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[4]/div/span/text()'))
     price.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[4]/div/span/text()'))
     price.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[4]/div/span/text()'))
-    
+
     changeNumber= []
     changeNumber.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[2]/div/span/text()'))
     changeNumber.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[2]/div/span/text()'))
     changeNumber.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[2]/div/span/text()'))
-    
+
     changePercent = []
     changePercent.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[5]/div/span/text()'))
     changePercent.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[2]/div[1]/div[1]/div[5]/div/span/text()'))
     changePercent.append(tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[1]/div/div[1]/div[4]/div/div[3]/div[1]/div[1]/div[5]/div/span/text()'))
-    
+
     news = None
 
     # if we get data back from webscarping we return a company object
@@ -97,8 +97,8 @@ def webScraping(tree):
     changeNumber = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[1]/span/text()')
     changePercent = tree.xpath('/html/body/div[2]/div[6]/div[2]/div/div[2]/div[3]/div/div[1]/div[1]/div[3]/div[2]/span[1]/div[2]/span/text()')
     news = displayNews(tree)
-   
-        
+
+
     if len(image) == 0:
         up = False
     return name, price, up, changeNumber, changePercent ,news
@@ -210,15 +210,15 @@ def searchWebsite(searchTerm):
 
     # if we get data back from webscarping we return a company object
     if(len(name)!=0 or len(price)!=0):
+        name = name[0].split()
+        stock_ticker = name[:-1]
+        del name[-1]
+        name = ' '.join(name)
         try:
-            name = name[0].split()
-            stock_ticker = name[:-1]
-            del name[-1]
-            name = ' '.join(name)
             change = changeNumber[0] + " " + changePercent[0]
             return(company(searchTerm, name,price[0],up,change,news))
         except:
-            return ("There is no price data on this stock")
+            return (company(searchTerm, name, "No Price Data", up, "No Price Data", news))
 
     # otherwise we have to display the search terms
     return displaySearch(tree)
