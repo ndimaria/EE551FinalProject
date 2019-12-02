@@ -2,7 +2,7 @@
 This repository will contain code relevant to Nicholas DiMaria's EE551 Engineering Programming: Python final project.
 
 ## Description ##
-For this project I created a stock quote tracker. This application will allow a user to enter a symbol, or the name of a company that they are curious about the stock price. The program scrapes https://markets.businessinsider.com for all the information. If a stock ticker is entered, the programs displays the price, how much the price has changed (both percent and dollar amount), as well as the news. The news is displayed with a button below each news header to go to that website. If a company name is entered the search results for that company name are returned. 
+For this project I created a stock quote tracker. This application will allow a user to enter a symbol, or the name of a company that they are curious about the stock price. The program scrapes https://markets.businessinsider.com for all the information. If a stock ticker is entered, the programs displays the price, how much the price has changed (both percent and dollar amount), as well as the news. The news is displayed with a button below each news header to go to that website. If a company name is entered the search results for that company name are returned in a listbox. The correct company can then be selected from the listbox. 
 
 ## How to install ##
 To download this application just clone this repository. Then install the following:
@@ -30,7 +30,7 @@ If entered a stock ticker:
   
 If entered a company name:
 * Select the company you would like from the listbox
-* Click "OK" button or enter again
+* Click "OK" button or enter again 
 
 ## Commits ##
 <details>
